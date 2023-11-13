@@ -1,0 +1,270 @@
+<html>
+<head>
+<title>Registration form by Manisha</title>
+<style>
+
+
+ body {
+            font-family: Arial, sans-serif;
+           
+        }
+
+.header{
+text-align:center;
+width:100%;
+background-color:teal;
+color:white;
+
+ justify-content: center;  
+            align-items: center; 
+     
+}
+
+ 
+
+.left-side,.right-container{
+ width: 40%;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+
+
+} 
+
+
+.line{
+
+border:2px solid blue
+}
+
+.right-container {
+            overflow-y: auto;
+        }
+
+.form-group {
+            display: flex;
+            margin-bottom: 15px;
+            align-items: center;
+        }
+        .form-group label {
+            width: 100px;
+            text-align: right;
+            margin-right: 10px;
+        }
+        .form-group input[type="text"], .form-group input[type="email"] {
+            flex: 1;
+            padding: 5px;
+        }
+        .form-group input[type="radio"] {
+            margin-right: 5px;
+        }
+.form-group button{
+
+width:100px;
+height:40px;
+ color:white; 
+}
+
+#submit{
+
+background-color:blue;
+border:2px solid blue;
+border-radius:5px;
+
+}
+#clear{
+
+background-color:red;
+border:2px solid red;
+border-radius:5px;
+margin-left:20px;
+}
+
+.complete{
+ display: flex;
+            justify-content: space-between;
+}
+
+
+
+ table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid #ccc;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: teal;
+            color: white;
+        }
+
+
+table tr:nth-child(even) {
+    background-color: lightyellow;  
+  }
+
+table tr:nth-child(odd) {
+    background-color: white; 
+  }
+  .delete-button{
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    font-family: 'Times New Roman', Times, serif;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 5px;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+.delete-button:hover{
+    background-color: #0056b3;
+}
+
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+<h2 class="header">Registration Form</h2>
+<div class="complete">
+ 
+ 
+<div class="left-side"> 
+ 
+ <form id="registrationForm">
+  
+            <div class="form-group">
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" required>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+
+            <div class="form-group">
+                <label for="website">Website:</label>
+                <input type="text" id="website" name="website">
+            </div>
+
+            <div class="form-group">
+                <label>Gender:</label>
+                <input type="radio" id="male" name="gender" value="male">
+                <label for="male">Male</label> 
+                <input type="radio" id="female" name="gender" value="female">
+                <label for="female">Female</label>
+            </div>
+
+            <div class="form-group">
+                <label for="image">Image Link:</label>
+                <input type="file" id="image" name="image">
+            </div>
+
+
+<div class="form-group">
+                <label for="skills">Skills:</label>
+                <input type="checkbox" id="java" name="skills" value="java">Java
+                 
+                <input type="checkbox"  name="skills" id="html" value="html">HTML
+                
+               <input type="checkbox"  name="skills" id="css" value="css">CSS
+                
+
+            </div>
+<div class="form-group">
+<input type="submit" value="Enroll Student"  onclick="addStudent()" id="submit">
+<input type="reset"  value="clear" id="clear">
+
+
+</div>
+
+            
+        </form>
+
+ 
+
+</div>
+
+<div class="line">
+
+</div>
+
+
+<div class="right-container">
+        <h2>Enrolled Students</h2>
+       <table id="table">
+                <thead>
+                    <tr>
+                        <th style="width:70%">Description</th>
+                       <th>Image</th>
+                    </tr>
+                </thead>
+                <tbody id="studentList"></tbody>
+            </table>
+    </div>
+
+</div>
+ <script>
+
+
+  function addStudent() {
+    // Get form values
+    var name = document.getElementById("name").value;
+    var email = document.getElementById("email").value;
+    var gender = document.querySelector('input[name="gender"]:checked').value;
+    var skills = Array.from(document.querySelectorAll('input[name="skills"]:checked')).map(skill => skill.value);
+    var image = document.getElementById("image").files[0];
+    var website = document.getElementById("website").value;
+
+    // Create a new row in the table
+    var table = document.getElementById("table");
+    var newRow = table.insertRow(table.rows.length);
+    var descriptionCell = newRow.insertCell(0);
+    var imageCell = newRow.insertCell(1);
+
+    // Populate the table row
+    descriptionCell.innerHTML = `Name: ${name}<br>Email: ${email}<br>Gender: ${gender}<br>Skills: ${skills.join(", ")}<br>Website: <a href="${website}" target="_blank">${website}</a>`;
+
+    var img = document.createElement("img");
+    img.src = URL.createObjectURL(image);
+    img.classList.add("student-image");
+    img.style.maxWidth = "100px";
+    img.style.maxHeight = "100px";
+    imageCell.appendChild(img);
+
+    // Add delete button
+    var deleteButton = document.createElement("button");
+    deleteButton.innerHTML = "Delete";
+    deleteButton.classList.add("delete-button");
+    deleteButton.style.display = "block"; // Display the button as a block element
+    deleteButton.style.margin = "35px"; // Center the button horizontally
+    deleteButton.onclick = function() {
+        table.deleteRow(newRow.rowIndex);
+    };
+    newRow.appendChild(deleteButton);
+        
+    document.getElementById("registrationForm").reset();
+
+    }
+
+</script>
+
+
+</body>
+
+
+</html>
